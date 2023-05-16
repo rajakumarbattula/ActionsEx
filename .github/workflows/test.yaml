@@ -19,18 +19,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
+          architecture: ${{ matrix.architecture }}
+      - run: uname -m
+#           cache-dependency-path: config/go.sum      
 #       - name: setup GOPATH
 #         run: |
 #           mkdir -p $HOME/go
 #           echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
 #           echo "export PATH=\$GOPATH/bin:\$PATH"          
 #           source $HOME/.bashrc
-      - uses: actions/setup-go@v4
-        with:
-          go-version: ${{ matrix.go }}
-          architecture: ${{ matrix.architecture }}
-#           cache-dependency-path: config/go.sum
-      - run: uname -m
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
 #         with:
