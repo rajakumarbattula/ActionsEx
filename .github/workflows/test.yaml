@@ -29,6 +29,11 @@ jobs:
           echo "export PATH=\$GOPATH/bin:\$PATH"
           echo "${GOPATH}"
           source $HOME/.bashrc
+      - name: Install dependenc ies        
+        run: |          
+          if [ "${{ matrix.architecture }}" = "ppc64le" ]; then
+            sudo apt-get -yq install libc6-dev-ppc64el-cross
+          fi
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
