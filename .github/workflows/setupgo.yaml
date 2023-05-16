@@ -1,0 +1,34 @@
+---
+name: Install Go
+on:
+  push:
+    branches:
+      - main
+jobs:    
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:        
+        architecture: [ppc64le, amd64]      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Go
+        run: |
+          if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
+            export GO_ARCH=amd64
+          elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+            export GO_ARCH=ppc64le
+          fi
+          
+          wget -q https://go.dev/dl/go1.20.4.linux-${GO_ARCH}.tar.gz
+          sudo tar -C /usr/local -xzf go1.20.4.linux-${GO_ARCH}.tar.gz
+          echo "export PATH=\$PATH:/usr/local/go/bin" >> $GITHUB_ENV
+          echo "export GOPATH=\$HOME/go" >> $GITHUB_ENV
+          echo "export GOROOT=/usr/local/go" >> $GITHUB_ENV
+          echo "export GO111MODULE=on" >> $GITHUB_ENV
+      - name: Verify Go installation
+        run: |
+          go version
+
