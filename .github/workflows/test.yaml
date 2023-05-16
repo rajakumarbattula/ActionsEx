@@ -1,0 +1,43 @@
+---
+name: test CI
+
+on:
+  push:
+    branches:
+      - main     
+
+jobs:    
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [1.17]
+        architecture: [amd64, ppc64le ]        
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+#       - name: Set up QEMU
+#         uses: docker/setup-qemu-action@v2
+      # - name: setup GOPATH
+      #   run: |
+      #     mkdir -p $HOME/go
+      #     echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
+      #     echo "export PATH=\$GOPATH/bin:\$PATH"
+      #     source $HOME/.bashrc
+      - uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
+          architecture: ${{ matrix.architecture }}
+      - run: lscpu
+#       - uses: actions/checkout@v3
+#       - uses: ./.github/actions/go-cache
+#         with:
+#           go: ${{ matrix.go }}          
+#       - run: lscpu && cd config && go test ./...
+#       - uses: actions/upload-artifact@v3
+#         if: failure()
+#         with:
+#           name: workspace-${{matrix.go}}          
+#           path: ${{ github.workspace }}
+          
