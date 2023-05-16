@@ -26,6 +26,7 @@ jobs:
           echo "export PATH=\$GOPATH/bin:\$PATH"
           echo $PATH
           echo $HOME
+          echo $GOPATH
           source $HOME/.bashrc
       - uses: actions/setup-go@v4
         with:
