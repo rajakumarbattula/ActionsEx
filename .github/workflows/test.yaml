@@ -16,17 +16,24 @@ jobs:
         architecture: [ppc64le, amd64]
       fail-fast: false
       max-parallel: 2
-    steps:
-      - run: uname -m
+    steps:      
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - run: uname -m 
+      - name: setup GOPATH
+        run: |
+          mkdir -p $HOME/go
+          echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
+          echo "export PATH=\$GOPATH/bin:\$PATH"
+          echo "${GOPATH}"
+          source $HOME/.bashrc
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
           architecture: ${{ matrix.architecture }}
-#       - name: Install dependencies        
+#       - name: Install dependenc ies        
 #         run: |
 #           uname -m
 #           if [ "${{ matrix.architecture }}" = "ppc64le" ]; then
@@ -40,12 +47,7 @@ jobs:
 #           go test -v ./ ...
 #           go env GOPATH
 #           cache-dependency-path: config/go.sum      
-#       - name: setup GOPATH
-#         run: |
-#           mkdir -p $HOME/go
-#           echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
-#           echo "export PATH=\$GOPATH/bin:\$PATH"          
-#           source $HOME/.bashrc
+#       
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
 #         with:
