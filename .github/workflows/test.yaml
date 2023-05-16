@@ -17,8 +17,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-#       - name: Set up QEMU
-#         uses: docker/setup-qemu-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       # - name: setup GOPATH
       #   run: |
       #     mkdir -p $HOME/go
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
-#           architecture: ${{ matrix.architecture }}
+          architecture: ${{ matrix.architecture }}
       - run: uname -a
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
