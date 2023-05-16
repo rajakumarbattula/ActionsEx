@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [1.17]                
+        go: [1.17]
+        architecture: [ppc64le, amd64]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -27,7 +28,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
-          architecture: ${{ matrix.architecture }}
+#           architecture: ${{ matrix.architecture }}
       - run: lscpu
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
