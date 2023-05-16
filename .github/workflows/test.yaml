@@ -14,6 +14,8 @@ jobs:
       matrix:
         go: [1.20.4]
         architecture: [ppc64le, amd64]
+      fail-fast: false
+      max-parallel: 2
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -23,7 +25,19 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
           architecture: ${{ matrix.architecture }}
-      - run: uname -m
+      - name: Install dependencies
+        run: |
+          uname -m
+          if [ "${{ matrix.architecture }}" = "ppc64le" ]; then
+            sudo apt-get -yq install libc6-dev-ppc64el-cross
+          fi
+      - name: Build and Test
+        run: |
+          go env -w GO111MODULE=on
+          go env -w GOPROXY=https://proxy.golang.com,direct
+          go build ./ ...
+          go test -v ./ ...
+          go env GOPATH
 #           cache-dependency-path: config/go.sum      
 #       - name: setup GOPATH
 #         run: |
