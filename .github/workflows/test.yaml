@@ -32,6 +32,10 @@ jobs:
       - name: Install dependenc ies        
         run: |          
           if [ "${{ matrix.architecture }}" = "ppc64le" ]; then
+            sudo apt-get install wget
+            sudo wget https://rpmfind.net/linux/openmandriva/cooker/repository/aarch64/main/release/cross-ppc64le-openmandriva-linux-gnu-libc-2.37-4-omv2390.aarch64.rpm
+            sudo apt-get install rpm2cpio
+            rpm2cpio ./cross-ppc64le-openmandriva-linux-gnu-libc-2.37-4-omv2390.aarch64.rpm | cpio -i --make-directories
             sudo apt-get -yq install libc6-dev-ppc64el-cross
           fi
       - uses: actions/setup-go@v3
