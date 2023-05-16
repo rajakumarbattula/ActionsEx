@@ -1,13 +1,14 @@
+---
 name: test CI
 
 on:
   push:
     branches:
-      - main
+      - main     
 
-jobs:
+jobs:    
   test:
-    name: Test1
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,56 +17,16 @@ jobs:
       fail-fast: false
       max-parallel: 2
     steps:
-      - name: Checkout code
+      - run: uname -m
+      - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
-
-      - name: Build and test (amd64)
-        run: |
-          go build ./...
-          go test -v ./...
-          go env GOPATH
-
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v1
-
-      - name: Build and test (ppc64le)
-        run: |
-          docker buildx create --use --name=multiarch
-          docker buildx build --platform=linux/ppc64le --load -t myapp:ppc64le .
-          docker run myapp:ppc64le go test -v ./...
-# ---
-# name: test CI
-
-# on:
-#   push:
-#     branches:
-#       - main     
-
-# jobs:    
-#   test:
-#     name: Test
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         go: [1.20.4]
-#         architecture: [ppc64le, amd64]
-#       fail-fast: false
-#       max-parallel: 2
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v2
-#       - name: Set up QEMU
-#         uses: docker/setup-qemu-action@v2
-#       - uses: actions/setup-go@v4
-#         with:
-#           go-version: ${{ matrix.go }}
-#           architecture: ${{ matrix.architecture }}
-#       - name: Install dependencies
+          architecture: ${{ matrix.architecture }}
+      - name: Install dependencies        
 #         run: |
 #           uname -m
 #           if [ "${{ matrix.architecture }}" = "ppc64le" ]; then
@@ -95,3 +56,43 @@ jobs:
 #         with:
 #           name: workspace-${{matrix.go}}          
 #           path: ${{ github.workspace }}
+# name: test CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   test:
+#     name: Test1
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         go: [1.20.4]
+#         architecture: [ppc64le, amd64]
+#       fail-fast: false
+#       max-parallel: 2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Go
+#         uses: actions/setup-go@v4
+#         with:
+#           go-version: ${{ matrix.go }}
+
+#       - name: Build and test (amd64)
+#         run: |
+#           go build ./...
+#           go test -v ./...
+#           go env GOPATH
+
+#       - name: Set up Docker
+#         uses: docker/setup-buildx-action@v1
+
+#       - name: Build and test (ppc64le)
+#         run: |
+#           docker buildx create --use --name=multiarch
+#           docker buildx build --platform=linux/ppc64le --load -t myapp:ppc64le .
+#           docker run myapp:ppc64le go test -v ./...
