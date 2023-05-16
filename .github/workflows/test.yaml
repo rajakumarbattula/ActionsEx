@@ -23,15 +23,13 @@ jobs:
         run: |
           mkdir -p $HOME/go
           echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
-          echo "export PATH=\$GOPATH/bin:\$PATH"
-          echo $PATH
-          echo $HOME
-          echo $GOPATH
+          echo "export PATH=\$GOPATH/bin:\$PATH"          
           source $HOME/.bashrc
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
           architecture: ${{ matrix.architecture }}
+          path: $PATH
       - run: uname -a
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
