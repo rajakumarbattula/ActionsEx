@@ -28,8 +28,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
-          architecture: ${{ matrix.architecture }}
-          path: $PATH
+          architecture: ${{ matrix.architecture }}          
       - run: uname -a
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
