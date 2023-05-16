@@ -30,7 +30,7 @@ jobs:
           go-version: ${{ matrix.go }}
           architecture: ${{ matrix.architecture }}
 #           cache-dependency-path: config/go.sum
-      - run: uname -a
+      - run: uname -m
 #       - uses: actions/checkout@v3
 #       - uses: ./.github/actions/go-cache
 #         with:
