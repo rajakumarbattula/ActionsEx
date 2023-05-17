@@ -29,6 +29,10 @@ jobs:
           echo "export GOPATH=\$HOME/go" >> $GITHUB_ENV
           echo "export GOROOT=/usr/local/go" >> $GITHUB_ENV
           echo "export GO111MODULE=on" >> $GITHUB_ENV
+          echo "${{ matrix.architecture }}"
+          uname -m
+          go version
+          
       - name: Verify Go installation
         run: |
           echo "${{ matrix.architecture }}"
